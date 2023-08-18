@@ -1,24 +1,18 @@
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
+const yargs = require('yargs');
 
-const algorithm = 'aes-256-cbc';
-const key = crypto.randomBytes(32); // Clave secreta
-const iv = crypto.randomBytes(16); // Vector de inicialización
+require("./src/commands/encrypt/encrypt.command");
 
-const file = "files/file.pdf";
-const { name, ext } = path.parse(file)
+yargs.fail((msg, err, yargs) => {
+  if (err) {
+    console.error('Error:', err.message);
+  } else {
+    console.error('Error:', msg);
+  }
+  process.exit(1);
+});
 
-const text = fs.readFileSync(file);
 
-const cipher = crypto.createCipheriv(algorithm, key, iv);
-const encryptedData = Buffer.concat([cipher.update(text), cipher.final()]);
+yargs.strict();
+yargs.parse();
 
-fs.writeFileSync(`${name}.enc`, encryptedData);
-
-const encryptedFile = fs.readFileSync(`${name}.enc`);
-
-const decipher = crypto.createDecipheriv(algorithm, key, iv);
-const decryptedData = Buffer.concat([decipher.update(encryptedFile), decipher.final()]);
-
-fs.writeFileSync(`${name}-decrypted${ext}`, decryptedData);
+// node app encrypt --path C:\Users\pablo\OneDrive\Escritorio\encriptar-archivos\files\file.pdf
