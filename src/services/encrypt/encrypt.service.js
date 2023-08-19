@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const path = require("path");
+const fs = require('fs');
 
 class Encrypt {
   constructor() {}
@@ -7,15 +8,12 @@ class Encrypt {
     const algorithm = "aes-256-cbc";
     const key = crypto.randomBytes(32); // Clave secreta
     const iv = crypto.randomBytes(16); // Vector de inicialización
-    const { base, name, ext } = path.parse(filePath);
 
     const data = fs.readFileSync(filePath); // Leer el archivo
 
     const cipher = crypto.createCipheriv(algorithm, key, iv);
     const encryptedData = Buffer.concat([cipher.update(data), cipher.final()]); // Contenido del archivo encriptado
-    fs.writeFileSync(`${name}.enc`, encryptedData);
-    fs.writeFileSync(`key-${base}.key`, key);
-    fs.writeFileSync(`iv-${base}.iv`, iv);
+    return [encryptedData, key, iv];
   }
   decryptedFile(filePath, iv, key, ext){
     const { name } = path.parse(filePath);

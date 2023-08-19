@@ -15,4 +15,5 @@ yargs.fail((msg, err, yargs) => {
 yargs.strict();
 yargs.parse();
 
-// node app encrypt --path C:\Users\pablo\OneDrive\Escritorio\encriptar-archivos\files\file.pdf
+// node index.js encrypt --path C:\Users\pablo\OneDrive\Escritorio\encriptar-archivos\files\file.pdf
+// node index.js encrypt --path files\file.pdf
