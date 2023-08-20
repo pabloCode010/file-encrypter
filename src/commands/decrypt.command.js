@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const Encrypt = require("../services/encrypt.service");
+const { magenta, yellow, red } = require("colorette");
 
 const func = (argv) => {
   const processCwd = process.cwd(); // devuelve la ruta desde donde se ejecuta el programa
@@ -31,7 +32,7 @@ const func = (argv) => {
     throw new Error(`No Existe Archivo "${name}.iv"`);
   }
 
-  console.log("File:", argv.path);
+  console.log("File:", yellow(argv.path));
   const key = fs.readFileSync(keyFile);
   const iv = fs.readFileSync(ivFile);
   // se define la extension del archivo encriptado
@@ -39,7 +40,7 @@ const func = (argv) => {
   if (fs.existsSync(fileType)) {
     type = fs.readFileSync(fileType);
   } else {
-    console.log(`No Hay Un  Archivo ${name}.filetype, No Se Asignara Extensión`);
+    console.log(magenta(`No Hay Un  Archivo ${name}.filetype, No Se Asignara Extensión`));
   }
   // se desencripta el archivo
   const decryptedData = Encrypt.decryptedFile(argv.path, key, iv);
@@ -62,7 +63,7 @@ yargs.command({
     try {
       func(argv);
     } catch (error) {
-      console.error(error);
+      console.error("Error:", red(error));
     }
   },
 });

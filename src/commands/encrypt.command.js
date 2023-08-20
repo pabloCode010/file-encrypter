@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const Encrypt = require("../services/encrypt.service");
+const { red, yellow } = require("colorette");
 
 const func = (argv) => {
   const processCwd = process.cwd();
@@ -12,7 +13,7 @@ const func = (argv) => {
   if (!fs.existsSync(argv.path)) {
     throw new Error("No Existe");
   }
-  console.log("File:", argv.path);
+  console.log("File:", yellow(argv.path));
   const { name, ext } = path.parse(argv.path);
   const savePath = path.join(processCwd, `${name}-enc`);
   fs.mkdirSync(savePath);
@@ -37,7 +38,7 @@ yargs.command({
     try {
       func(argv);
     } catch (error) {
-      console.error(error);
+      console.error("Error:", red(error));
     }
   },
 });
