@@ -9,12 +9,10 @@ class Encrypt {
   encryptedFile(filePath) {
     const key = crypto.randomBytes(32); // Clave secreta
     const iv = crypto.randomBytes(16); // Vector de inicialización
-    // console.log("key:", key.toString());
-    // console.log("iv: ", iv.toString());
     const data = fs.readFileSync(filePath); // Leer el archivo
 
     const cipher = crypto.createCipheriv(this.algorithm, key, iv);
-    const encryptedData = Buffer.concat([cipher.update(data), cipher.final()]); // Contenido del archivo encriptado
+    const encryptedData = Buffer.concat([cipher.update(data), cipher.final()]); // Contenido encriptado
     return [encryptedData, key, iv];
   }
   decryptedFile(filePath, key, iv){
